@@ -1,0 +1,51 @@
+<div class="container" id="main">
+  <form class="tariffForm" [formGroup]="tariffForm">
+    <h1 class="app-header">Калькулятор тарифов</h1>
+    <hr>
+    <div class="field">
+      <label class="label">Количество километров</label>
+      <div class="control">
+        <input [ngClass]="{'is-danger': numberOfKilometres?.errors?.required && numberOfKilometres?.touched, 'input': true, 'is-normal': true}" formControlName="numberOfKilometres" type="number">
+        <p class="help is-danger" *ngIf="numberOfKilometres?.errors?.required && numberOfKilometres?.touched">Количество километров обязательно для заполнения</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Возраст</label>
+      <div class="control">
+        <input [ngClass]="{'is-danger': age?.errors?.required && age?.touched, 'input': true, 'is-normal': true}" formControlName="age" type="number">
+        <p class="help is-danger" *ngIf="age?.errors?.required && age?.touched">Возраст обязателен для заполнения</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Вес багажа</label>
+      <div class="control">
+        <input [ngClass]="{'is-danger': baggageWeight?.errors?.required && baggageWeight?.touched, 'input': true, 'is-normal': true}" formControlName="baggageWeight" type="number">
+        <p class="help is-danger" *ngIf="baggageWeight?.errors?.required && baggageWeight?.touched">Вес багажа обязателен для заполнения</p>
+      </div>
+    </div>
+    <button class="button is-primary is-fullwidth" (click)="onCalculate()" [disabled]="tariffForm.invalid">Рассчитать</button>
+  </form>
+
+  <hr>
+
+  <h1>Предложения:</h1>
+  <div *ngIf="companies.length > 0; else companiesElseBlock">
+    <div class="panel" *ngFor="let company of companies">
+      <p class="panel-heading">
+        {{company.name}}
+      </p>
+      <div *ngIf="company.tariffs.length > 0; else tariffsElseBlock">
+        <div class="panel-block" *ngFor="let tariff of company.tariffs">
+          <p>{{tariff.title}}: {{tariff.price}} {{tariff.currency}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #tariffsElseBlock><div class="panel-block"><p>Нет доступных тарифов</p></div></ng-template>
+  <ng-template #companiesElseBlock>Нет доступных тарифов</ng-template>
+</div>
+
+
+
